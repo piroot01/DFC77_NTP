@@ -1,30 +1,41 @@
+#V2 of the programme
+
 #This script will return a relative effective permeability dependig on the input antenna values.
 
 #external libraries
 
-from math import log, exp, fabs
-from scipy.integrate import quad
+from math import pi, log
 
 #input values
 
-L = 0 #lenght of the ferrite rod
-D = 0 #diameter of a ferrite rod
+L_r = 0 #lenght of the ferrite rod
+D_r = 0 #diameter of the ferrite rod
+D_p = 0 #diameter of the profile of the coil
+L_coil = 0 #lenght of the coil
 u = 0 #relative initial permeability of a ferrite rod
-l_coil = 0 #lenght of the coil on a ferrite rod
 
-def rel_eff_per(L, D, l_coil, u):
-    #the mean effective permeability of a ferrite rod
+#physical constants
 
-    u_cs = u / (1 + (u - 1) * (D / L)**2 * (log(L / D) * (0.5 + 0.7 * (1 - exp(-u * 10**(-3)))) - 1))
+epsilon_0 = 8.854187 * 10**(-12) #absolute permittivity
 
-    def u(x):
-        return u_cs * (1 + (0.106 * (2 * fabs(x) / L)) - (0.988 * (2 * fabs(x) / L)**2))
-    
-    #integrate the u(x) assuming that the coil is in the middle of the rod
+#necessary variables
 
-    u_partial, error = quad(u, -(l_coil / 2), (l_coil / 2))
-    
-    u_eff = u_partial * (1 / l_coil)
+l_1 = 0 #dimensional character of the coil
+phi_delta = 0 #magnetic flux phi_delta = phi / phi_max
+C_anf = 0 #antenna capacitance
+k = 0
+x = 0
+u_fe = 0 #apparent permeability
+
+def rel_eff_per(L_r, D_r, D_p, L_coil, u):
+
+    l_1 = L_coil + 0.45 * D_p
+    phi_delta = 1 / (1 + (((L_r - L_coil) / D_r)**(1.4) / (5 * u)))
+    C_anf = 0.5 * pi * epsilon_0 * (L_r - L_coil) / (log(2 * (L_r + D_r) / D_r) - 1)
+    k = ((phi_delta * C_anf / epsilon_0) + (2 * D_r)) / (2 * D_p)
+    x = 5.1 * (l_1 / D_p) / (1 + 2.8 * (D_p / l_1))
+    u_fe = (u - 1) * (D_r / D_p)**2 + 1
+
+    u_eff = (1 + x) / ((1 / k) + (x / u_fe))
 
     return u_eff
-

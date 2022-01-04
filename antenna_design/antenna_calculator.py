@@ -2,7 +2,7 @@
 
 #external libraries
 
-from relative_effective_permeability_V2 import rel_eff_per #better calculation than V!
+from relative_effective_permeability import rel_eff_per #better calculation than V!
 from math import pi, log, sqrt
 import matplotlib.pyplot as plt
 from tabulate import tabulate
@@ -38,7 +38,7 @@ c_cu = 5.96 * 10**7 #conductivity of copper
 #input values
 
 w = 0.0002 #single wire diameter
-k = 1 #number of wires in string 
+k = 1 #number of wires in string
 N_1 = 10 #inital number of turns
 N_2 = 1000 #terminal number of turns
 L_r = 0.0597 #lenght of the ferrite rod, 0,1248
@@ -85,9 +85,9 @@ K = -440.9943706 * s_h**8 + 1318.707293 * s_h**7 - 1604.5491034 * s_h**6 + 1021.
 #radiation resistance
 
 def rad_res(N):
-    
+
     R_r = 20 * pi**2 * (o / l)**4 * u_eff**2 * N**2
-    
+
     return R_r
 
 #loss resistance
@@ -121,10 +121,10 @@ for n in range(N_1, N_2):
     L = u_eff * K * air_core_coil(n) #calculate the inductance
     C = 1 / (4 * pi**2 * f**2 * L) #calculate the capacitance
     Q = (2 * pi * f * L) / (rad_res(n) + loss_res(n) + ohm_res(n)) #calculate quality factor of the antenna
-    R_rez = Q / (2 * pi * f * C) #calculate resonanace resistivity 
+    R_rez = Q / (2 * pi * f * C) #calculate resonanace resistivity
     f_bw = f / Q
     C_1 = 1 / (4 * pi**2 * L * (f**2 - 2 * f * f_bw + f_bw**2)) - C
-    C_2 = C - 1 / (4 * pi**2 * L * (f**2 + 2 * f * f_bw + f_bw**2)) 
+    C_2 = C - 1 / (4 * pi**2 * L * (f**2 + 2 * f * f_bw + f_bw**2))
 
     #check if is in parameters and write to the lists
 
