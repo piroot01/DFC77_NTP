@@ -2,3 +2,45 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \graphicspath{ {images/} }
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+\titleformat{\chapter}[block]{\bfseries\Huge}{}{0em}{}
+\titleformat{\section}[hang]{\bfseries\Large}{}{1em}{\thesection\enspace}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{DCF77 NTP server}
+\fancyhead[L]{\thechapter. Kapitola}
+\fancyfoot[C]{\textbf{\thepage}}
+\fancypagestyle{plain}{%  the preset of fancyhdr
+    \fancyhf{} % clear all header and footer fields
+    \fancyfoot[C]{\textbf{\thepage}} % except the center
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+\title{DCF77 NTP server}
+
+\author{Macháček Tomáš}
+
+\date{\today}
+
+\renewcommand*\contentsname{Obsah}
+
+\begin{document}
+
+\input{titlepage}
+
+\chapter{Abstrakt}
+    Zde bude abstrakt.
+
+\tableofcontents
+
+\chapter{Úvod}
+\input{chapters/introduction}
+
+\chapter{První kapitola}
+\input{chapters/chapter01}
+
+\end{document}
