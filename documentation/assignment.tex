@@ -1,0 +1,40 @@
+\documentclass{assignment}
+\usepackage[TS1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{erewhon}
+% \inEnglish % Uncomment for assignment in English
+
+\begin{document}
+
+\PrintForm
+    {Tomáš Macháček} % Jméno a příjmení studenta
+    {4.B} % Třída
+    {Emil Miler} % Vedoucí práce
+    {Zdroj přesného času řízený radiovým signálem DCF77 a poskytování času pomocí ethernetu - NTP server} % Název 
+    { % Pokyny k vypracování
+        Cílem práce je sestrojení vlastního NTP serveru, který bude synchronizován radiovým signálem vysílače DCF77. Zvolením vhodného elektrického zapojení bude přijímán a demodulován. Následně na zvolené plaformě bude zprovozněn NTP server, jako zdroj přesného času NTP serveru bude použit demodulovaný signál DCF77. Synchronizovaný čas a status bude zobrazen na integrovaném displeji.
+	}
+	{}
+    {https://github.com/MachacekTomas/DCF77_reciever_and_NTP_server} % URL repozitáře
+
+\PrintSchedule
+    {  % Říjen
+        \item Výběr tématu maturitní práce (do~22.\,10.\,2021)
+    }
+    { % Listopad
+        \item Zahájení stavby přijímače - návrh DPS, antény
+    }
+    { % Prosinec
+        \item Stavba přijímače - DPS, anténa a kryt na přijímač
+    }
+    { % Leden
+        \item Zahájení stavby druhé části - NTP server
+    }
+    { % Únor
+        \item Finalizace NTP serveru a uvedení do provozu
+    }
+    { % Březen
+        \item Odevzdání finální verze práce (do~25.\,3.\,2022)
+    }
+
+\end{document}
