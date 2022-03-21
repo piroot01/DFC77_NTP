@@ -58,4 +58,31 @@ demodulačním obvodu je použit vysoce účinný krystalový filtr.
 
 \subsection{Program pro výpočet antény}
 
+Program na výpočet antény se skládá z dvou hlavních částí, kalkulace modelu antény a poté
+zpracování dat do grafů.
+
+Základem je výpočet radiačního - $R_r$, ohmického - $R_L$ a ztrátového odporu - $R_f$.
+
+\begin{equation}
+    \begin{gathered}
+        R_r = 20\pi^2\left(\frac{o}{\lambda}\right)^4 \mu_{eff}^2 N^2 \\
+        R_L = \frac{l}{\sigma\pi d \delta} \\
+        R_f = 2 \pi f \mu_{eff} \frac{\mu_i}{\mu} \mu_0 N^2 \frac{S}{L_r}
+    \end{gathered}
+\end{equation}
+
+Kde $o$ je účinný obvod antény, $N$ je počet závitů cívky, $d$ je průměr vodiče, $f$ je
+rezonanční frekvence, $S$ je účinný povrch antény a $L_r$ je délka antény.
+
+Pro výpočet pozice cívky na feritové tyčce byly použity Nagaokovy rovnice, které nejblíže
+odpovídají reálnému modelu antény.
+
+Dále program spočítá rezonanční kondenzátor k dané anténě, jakkost antény. Zde je nutno
+podotknout, že jakkost úzce souvisí s ziskem a šířkou přijímaného pásma. Čím užší
+přijímané pásmo, tím vyšší zisk, avšak anténa je více náchylná na změny tlaku, teplot atd. Právě proto generuje program grafy, které vystihují závislosti díky nímž je snažší
+nalézt optimální parametry pro danou antény.
+
+Na konec program ještě vygeneruje tabulku, v níž jsou zapsány jednotlivé konfigurace
+antén.
+
 
