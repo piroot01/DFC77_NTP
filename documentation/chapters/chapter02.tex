@@ -53,8 +53,28 @@
         \item zabezpečení přenosu – několik paritních bitů
         \item od roku 2007 i předpověď počasí
     \end{itemize}
+
 \subsection{RS-485 komunikace}
+    Jedná se o typ komunikace, která se především používá v průmyslových prostředích.
+    Standard 485 je navržen tak, aby umožňoval vytvoření dvouvodičového poloduplexního
+    vícebodového sériového spojení. Vlastně se jedná o značně napěťově posílenou RS-232, což je
+    totéž co RS-485, avšak dosah sběrnice je až 1200 m, oproti 20 m.
+
+    Komunikační linka je tvořena dvěma vodiči (označené A a B), na obou koncích jsou kvůli
+    zvýšení odolnosti proti rušení 120$\Omega$ rezistory. Maximální přenosová rychlost je
+    10 Mib/s.
+
+    Přenos dat je uskutečněn pomocí 7 nebo 8bitových rámců se startbitem a poté jedním či
+    více stopbity. Vysílač by měl na výstupu při logické 1 (klidový stav linky) generovat na vodiči A napětí −2 V, na vodiči B +2 V, při logické 0 by měl na vodiči A generovat +2 V, na vodiči B −2 V.
+
 \section{Zpracování}
+Mezi hlavní požadavky patřila i kompaktnost, to znamená, že byl vytvořený, na zakázku,
+plošný spoj, na nemž jsou uložené všechny komponenty. Dělí se na tři základní sektory,
+první je zodpovědný za demodulaci signálu, druhý převádí demodulovaný signál na RS-485
+sběrnici a poslední vyhodnocuje jakkost signálu. Každému sektoru je přiřazen jeden
+integrovaný obvod.
 \subsection{Demodulace DCF77 signálu}
+
+
 \subsection{Převod na RS-485 sběrnici}
 \subsection{Systém pro vyhledávání signálu}
