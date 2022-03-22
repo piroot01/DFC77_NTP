@@ -104,7 +104,9 @@ integrovaný obvod.
     norma TTL deklaruje dosah 2-3 metry. Tím pádem bylo nutné nalézt jinou normu.
 
     Potom byla zvolena norma RS-232, ta má dosah 20m. Ale potom se přešlo na RS-485, ta má
-    jednak o 1 km vetší dosah a používá stejný typ kódováni jako 232.
+    jednak o 1 km vetší dosah a používá stejný typ kódováni jako 232. A to z důvodu jednak
+    stejné požizovací ceny a vyšší napěťová úroveň zajišťuje značně vyšší odolnost vůči
+    rušení.
 
     Pro transkódování signálu byl použit integrovaný obvod SN75176, nepatří mezi rychlé
     převodníky, avšak na naší aplikaci je postačující. Komunikace probíhá jednostranně
@@ -112,6 +114,9 @@ integrovaný obvod.
 
     Abychom ochránili jak anténní jednotku, jsou za obvodem zapojeny trisily a teplem
     vratné pojistky proti přepětí a nadproudu, který se může indukovat ve vodičích.
+    Nakonec je signál zaveden na vstup Ethernet konektoru. Ten byl použit proto, že
+    má pojistku a oproti ostatním průmyslovým konektorům je velice levný. A navíc UTP
+    kabel využívá kroucenou linku, která je záhodná u 485 komunikace.
 
 \subsection{Systém pro vyhledávání signálu}
 
