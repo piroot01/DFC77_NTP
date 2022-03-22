@@ -120,4 +120,31 @@ integrovaný obvod.
 
 \subsection{Systém pro vyhledávání signálu}
 
+    Abychom nemuseli při ladění antény čekat dvě minutu na načtení celého bufferu a potom
+    zjišťovali, zda je správný. Nutno podotknou, že anténa je směrová, takže záleží na
+    směru normálového vektoru vůči zdroji, což je anténa DCF77. Což ještě ztěžuje situaci
+    ladění. Další, rychlejší, způsob ladění vyžaduje osciloskop. Proto bylo nutné vybavit
+    obvod zařízením, které by v reálném čase sledovalo přijímaný signál a vyhodnocovalo
+    jeho kvalitu.
+    \newpage
+    Srdcem je mikrokontrolér PIC, na který je nahraný program, který analyzuje signál z
+    přijímače. Dále jsou na PIC připojeny dvě LED, které fungují jako signalizace. Jedna
+    je zeléná, značící, že je obvod napájen a druhá, oranžová, signalizuje kvalitu
+    signálu. A to následujícím způsobem:
+    \vspace{1em}
 
+    \-\hspace{0cm} \textit{Pokud dioda nesvítí, potom je signál zcela vadný. Jakmile se dioda
+    rozbliká, znamená to, že byl přijat validní bit, pakliže se dioda rozbliká rychleji (s
+    vyšší frekvencí), byl přijat další validní bit. Tento postup pokračuje, až dioda
+    svítí, neboli anténa je naladěná. S klesající frekvencí se naopak anténa rozlaďuje.
+    Takže svítící dioda je zárukou dobrého signálu. }
+    \vspace{1em}
+
+    Program funguje tak, že kontroluje správnou délku signálu, frekvenci, intervali mezi
+    jednotlivými pulsy, inverzní délku pulzů a minutový puls (prázdný). Pakliže všechny
+    parametry jsou splněny je bit zaznamenán jako korektní. Tuto proceduru provádí s
+    každým bitem a to v reálném čase, takže uživatel má aktuální přehled o kvalitě
+    přijímaného signálu a může nalézt místo s nejlepším příjmem.
+
+    Deska je osazená pinovou lištou, která slouží k flashování programu, takže je velice
+    snadné aktualizovat program v PICu.
