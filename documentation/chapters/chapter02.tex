@@ -74,7 +74,28 @@ první je zodpovědný za demodulaci signálu, druhý převádí demodulovaný s
 sběrnici a poslední vyhodnocuje jakkost signálu. Každému sektoru je přiřazen jeden
 integrovaný obvod.
 \subsection{Demodulace DCF77 signálu}
+    Pro tento účel byl zvolen U4224B integrovaný obvod. Jedná se o přijímací obvod, který
+    disponuje demodulací od 40 do 80 kHz, podle zvoleného krystalu. Dále má velmi vysokou
+    citlivost, takže i v oblatech s vysokým rušením či slabým signálem, je možně anténu
+    dobře naladit.
 
+    Mohl být použito i zapojení typu superhat. Oscilátor naladěný na frekvenci 77 kHz by
+    byl přiveden na vstup vyváženého směšovače, kde společně s DCF77 signálem (77.5 kHz),
+    by vytvořily signál o rozdílovém kmitočtu 500 Hz. Tento signál by byl přiveden na
+    vstup operačního zesilovače, který by fungoval jako aktivní pásmová propust s šířkou
+    pásma 50 Hz. Jelikož by obvod nebyl stabilní bylo by také nutné vybavit obvod AVC
+    (aktivním vyvážením citlivosti).
+
+    Obvod výše popsaný by bylo možné sestavit pomocí diskrétních součástek, ale byl by
+    komplikovaný. Situaci navíc komplikuje fakt, že dnes hodně spínaných zdrojů generují
+    kmitočty, které vytvářejí harmonické násobky, a ty ruší příjem. Proto šířka pásma 50
+    Hz je prostě moc široká. Zúžení pásma vedlo k použití tzv. krystalového filtru.
+    Implementace krystalového filtru vedla na integrovaný obvod.
+
+    Na výstupu integrovaného je tedy demodulovaný DCF77 signál. Načež kvůli zvýšení
+    stability a ochrany dekodéru byl k obvodu zahrnut tvarovač signálu. Tedy obvod, který
+    se skládá z tranzistoru, který chrání dekodér a Schmittův klopný obvod na definování
+    napěťové úrovně. Tento signál je vedený na vstup převodníku RS-485.
 
 \subsection{Převod na RS-485 sběrnici}
 \subsection{Systém pro vyhledávání signálu}
