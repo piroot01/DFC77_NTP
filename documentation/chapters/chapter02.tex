@@ -1,0 +1,60 @@
+\section{Teorie}
+\subsection{Amplitudová modulace}
+    Amplitudová modulace, zkráceně AM, je nejjednodušší a nejstarší typ modulace. V
+    závislosti na změně modulačního signálu se mění amplituda nosného signálu.
+    Nosná vlna má řádově vyšší frekvenci než modulovaný signál. Fáze a frekvence se u této
+    modulace nemění.
+\\
+
+    \textbf{Matematický popis}
+\\
+
+    Pokud nosnou vlnu vyjádříme jako $n(t) = N \sin{(\Omega t)}$, kde $N$ je amplituda a
+    $\Omega$ je úhlová frekvence, a jednoduchý harmonický signál $m(t) = M \sin{(\omega t
+    + \phi)}$, kde $\phi$ je fázový posun vůči nosné $n(t)$, pak AM vznikne složením
+    přidáním $m(t)$ k amplitudě nosné $N$. Dostáváme tedy
+
+    \begin{equation}
+        y(t) = (N+M \sin{(\omega t +\phi)})\sin{(\Omega t)}
+    \end{equation}
+\subsection{DCF77}
+    Označení DCF77 se užívá pro německý dlouhovlnný rádiový vysílač a také jedinou
+    stanici, jíž poskytuje. Nosná frekvence DCF77 je 77500 Hz. Antény stanice se nacházejí
+    v Mainflingenu. Pravidelné a nepřetržité vysílání začalo v roce 1970.
+\\
+
+    \textbf{Vysílač}
+\\
+
+    Vysílač má výkon 50 kW, avšak skutečný vyzářený výkon je přibližně 25 kW. K vysílání
+    je použitá všesměrová anténa s kapacitním nástavcem, hlavní anténa je vysoká 150 m,
+    přičemž při údržbách se používá 200 m vysoká záložní. Dosah vysílače je 1500 až 2000
+    km. V České republice fungoval do roku 1995 velice podobný vysílač OMA.
+\\
+
+    \textbf{Kódování DCF77}
+\\
+
+    Kódování časové informace je prováděno pulzně šířkovou modulací (základní AM), poklesem amplitudy
+    nosné na 25 \% na začátku každé sekundy. Pakliže je puls dlouhý 100ms jedná se
+    logickou 0, 200ms dlouhý je logická 1. Aktualizace přenášené informace je prováděna
+    každou minutu.
+
+    Přenášejí se tyto informace:
+
+    \begin{itemize}
+        \item čas platný pro následující minutu
+        \item datum platné pro následující minutu
+        \item číslo dne v týdnu
+        \item hlášení změny časové zóny 1 hodinu předem (informace o přechodu ze standardního na letní čas nebo opačně)
+        \item časová zóna (je-li aktivní CET nebo CEST)
+        \item hlášení přestupné sekundy 1 hodinu předem
+        \item provoz na normální a rezervní anténu
+        \item zabezpečení přenosu – několik paritních bitů
+        \item od roku 2007 i předpověď počasí
+    \end{itemize}
+\subsection{RS-485 komunikace}
+\section{Zpracování}
+\subsection{Demodulace DCF77 signálu}
+\subsection{Převod na RS-485 sběrnici}
+\subsection{Systém pro vyhledávání signálu}
