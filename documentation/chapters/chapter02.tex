@@ -98,4 +98,21 @@ integrovaný obvod.
     napěťové úrovně. Tento signál je vedený na vstup převodníku RS-485.
 
 \subsection{Převod na RS-485 sběrnici}
+    Pro dobrý příjem signálu je nutné, aby byla anténa na vyvýšeném místě, bez rušení.
+    To znamená, že napájecí vodiče, ale i datové linky, musejí být alespoň 10m dlouhé.
+    Napájení není problém, ale sigál vedený klasickou TTL komunikací by byl ohrožen,
+    norma TTL deklaruje dosah 2-3 metry. Tím pádem bylo nutné nalézt jinou normu.
+
+    Potom byla zvolena norma RS-232, ta má dosah 20m. Ale potom se přešlo na RS-485, ta má
+    jednak o 1 km vetší dosah a používá stejný typ kódováni jako 232.
+
+    Pro transkódování signálu byl použit integrovaný obvod SN75176, nepatří mezi rychlé
+    převodníky, avšak na naší aplikaci je postačující. Komunikace probíhá jednostranně
+    halfduplexem.
+
+    Abychom ochránili jak anténní jednotku, jsou za obvodem zapojeny trisily a teplem
+    vratné pojistky proti přepětí a nadproudu, který se může indukovat ve vodičích.
+
 \subsection{Systém pro vyhledávání signálu}
+
+
