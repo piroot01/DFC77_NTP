@@ -20,7 +20,7 @@ NTP používá hierarchický systém „strata hodin“, kde systémy se stratem
     druhý problém, všechny přídavné obvody budou součástí tzv. HATu. A navíc je celá
     sestava velice kompaktní.
 \subsection{RPi HAT}
-    HAT je označení pro PCB, které je namontováno na, v našem případě, jednodeskový
+    HAT je označení pro PCB, které je namontováno na, v našem případě jednodeskový
     počítač. Přičemž rozšiřuje funkčnost desky, přidává vlastnosti. Raspberry disponují
     2x20 pinovou lištou, GPIO, která je vhodná pro komunikaci s HATem. Rozměry HATu jsou
     shodné s Raspberry, je to z toho důvodu, aby byl HAT pomocí sloupků spojen s
@@ -51,22 +51,131 @@ NTP používá hierarchický systém „strata hodin“, kde systémy se stratem
 
     \vspace{1em}
 
-\begin{lstlisting}
-/boot/config.txt
+    \begin{lstlisting}
+        /boot/config.txt
 
-[all]
+        [all]
 
-enable_uart=1
-dtoverlay=disable-bt
-\end{lstlisting}
+        enable_uart=1
+        dtoverlay=disable-bt
+    \end{lstlisting}
 
     \vspace{1em}
 
    Poté byla ověřena komunikace pomocí \verb|# screen /dev/ttyAMA0 9600|. Na konzoli by
    se měli zobrazovat znaky (jedno jaké) s vteřinovou periodou.
 
+\newpage
+
 \subsection{Zprovoznění DCF77 jako stratum 1 NTP serveru}
-    A
+    Potom, co jsme zajistili funkční vyčítání dat z anténý správným UART rozhraním, se
+    můžeme přesunout na samotnou instalaci NTP serveru.
+    \\
+
+    \textbf{Instalace s podporou RAW DCF}
+    \\
+
+    Prvním krokem je nainstaoování NTP, avšak pro naše účely je nutné podpora DCF77.
+    Instalaci provedeme dle následujících kroků.
+
+    \vspace{1em}
+
+    \begin{lstlisting}
+    $ wget http://www.eecis.udel.edu/~ntp/ntp_spool/
+    ntp4/ntp-4.2/ntp-4.2.8p15.tar.gz
+    $ tar zxf ntp-4.2.8p15.tar.gz
+    $ cd ntp-4.2.8p15/
+    $ ./configure --enable-RAWDCF --prefix=/usr
+    $ make
+    $ sudo systemctl stop ntp.service
+    $ sudo make install:
+    $ echo "ntp hold" | sudo dpkg --set-selections
+    \end{lstlisting}
+
+    \vspace{1em}
+
+    Poslední příkaz slouží k zakázání aktualizací NTP. Verzi NTP ověříme přes
+    \verb|ntpq --version|.
+    \\
+
+    \textbf{Nastavení strata 1}
+    \\
+
+    Ješte před tím, než nastavíme referenční hodiny pro NTP, přidáme uživatele \verb|user| do skupiny
+    \verb|tty|.
+
+    \vspace{1em}
+
+    \begin{lstlisting}
+    $ sudo adduser user tty
+    $ cat /etc/group | grep tty
+    \end{lstlisting}
+
+    \vspace{1em}
+
+    Nyní zeditujeme wrapper kód NTP, tak, aby server užíval DCF jako zdroj stratum 1.
+    Referenční hodiny \verb|/dev/refclock-0| jsou systémovým linkem na
+    \verb|/dev/ttyAMA0|.
+
+    \vspace{1em}
+
+    \begin{lstlisting}
+    #for using the DCF77 receiver add this
+    if [ ! -L /dev/refclock-0 ]; then
+            ln -s /dev/ttyAMA0 /dev/refclock-0
+    fi
+
+    #commented out this
+    #if [ -e /run/ntp.conf.dhcp ]; then
+            #NTPD_OPTS="$NTPD_OPTS -c /run/ntp.conf.dhcp"
+    #fi
+    \end{lstlisting}
+
+    \vspace{1em}
+
+\newpage
+
+    Nastartujeme daemon \verb|sudo systemctl start ntp.service|. Můžeme zkontolovat
+    přítomnost symbolického linku.
+
+
+    \begin{lstlisting}
+
+    $ ls -ahl /dev/ref*
+    /dev/refclock-0 -> /dev/ttyAMA0
+
+    \end{lstlisting}
+
+    \vspace{1em}
+
+    Dále upravíme soubor \verb|/etc/ntp.conf|.
+
+    \begin{lstlisting}
+
+    ntp.conf
+
+    \end{lstlisting}
+
+    \vspace{1em}
+
+    Konečně restartujeme NTP daemon a zkontrolujeme aktivitu NTP serveru, a to přes
+    \verb|ntpq -p|. Správný příjem lze jednoduše ověřit tak, že hodnota \textit{reach} je
+    377.
+    \\
+
+    \textbf{Oprava časové diletace = fudgetime}
+    \\
+
+    Díky nedokonalosti přenosu a časovým prodlevám vzniklé konverzí, je záhodné nastavit
+    kompenzační časovou konstantu, která bude vyrovnávat časový schodek. Celkový fudgetime
+    je dán součtem předkonfigurovaným a reálného, ten je v našem případě 592 ms.
+    Předkonfigurovaný fudgetime zjistíme následovně (zde 292 ms).
+
+   \begin{lstlisting}
+
+    $ ntpq -c cv
+    fudgetime1=292.000,
+   \end{lstlisting}
 
 \subsection{Ethernetové připojení}
 
