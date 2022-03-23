@@ -7,9 +7,9 @@ V druhé časti práce se rozebírá demodulaci signálu a převod na průmyslov
 sběrnici. Vše je součástí tzv. anténní jednotky, obsahuje anténu, demodulační obvod a systém kontrolující kvalitu
 signálu, což je jedna ze dvou hlavních komponent projektu.
 
-Třetí část se týká hlavní jednotky, skládá se z jednodeskového počítače, Raspberry Zero 2,
-na který je zhotoven HAT. Ten převádí demodulovaný signál z RS-485 na TTL sběrnici.
+Třetí část se týká hlavní jednotky, ta je zodpovědná za zpracování DCF77 signálu a
+hostování NTP serveru. Jádrem je Raspberry Zero 2, na které je navržený na zakázku
+vyrobený HAT.
 
-Poslední pasáž rozebírá softwarovou stránku hlavní jednotky, tudíž zprovoznění NTP
-serveru a zobrazování aktuálního času na LCD displeji.
-
+Poslední pasáž rozebírá softwarovou stránku hlavní jednotky. Zaobírá se nasazením zařízaní
+do provozu a posléze obsluhou zařízení.
