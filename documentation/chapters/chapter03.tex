@@ -1,6 +1,73 @@
 \section{Teorie}
 \subsection{Network time protocol}
+
+NTP je protokol pro synchronizaci vnitřních hodin počítačů po paketové síti s proměnným zpožděním. Tento protokol zajišťuje, aby všechny počítače v síti měly stejný a přesný čas. Byl obzvláště navržen tak, aby odolával následku proměnlivého zpoždění v doručování paketů.
+
+Počítač, který chce synchronizovat své hodiny, pošle pár dotazů několika NTP serverům a ty mu v odpovědi pošlou svůj, přesný čas. Klient z odpovědí nejprve vyloučí servery se zřejmě nesmyslným časem (s odchylkou 1000 sekund a více). Poté ponechá skupinu serverů s největším společným průnikem.
+
+NTP je jeden z nejstarších dosud používaných IP protokolů. NTP původně navrhl Dave Mills z univerzity v Delaware a stále jej, spolu se skupinou dobrovolníků, udržuje. Současná verze je NTP verze 4, kterou popisuje RFC 5905.
+
+NTP démon je uživatelský proces, který na stroji běží trvale. Většina protokolu a inteligence je implementována v tomto procesu. Pro dosažení nejlepšího výkonu je důležité, aby jádro operačního systému umělo řídit čas fázovým závěsem, místo aby přesný čas do systémových hodin dosazoval NTP démon přímo. Všechny dnešní verze Linuxu fázový závěs implementují.
+
+NTP používá hierarchický systém „strata hodin“, kde systémy se stratem 1 jsou synchronizovány s přesnými externími hodinami jako třeba GPS nebo jiné hodiny řízené rádiovým signálem (v Česku obvykle DCF77). NTP systémy strata 2 odvozují svůj čas od jednoho nebo více systémů se stratem 1 atd. To zabraňuje vzniku cyklu v grafu synchronizujících se strojů. Stratum systému leží v rozsahu 1 až 14; stratum 0 mají samotné referenční hodiny připojené k nejpřesnějšímu serveru; stratum 15 má počítač, který se v důsledku výpadku sítě nemůže synchronizovat s zdrojem času, nebo se synchronizuje po výpadku spojení.
+
 \section{Hardware}
+
+    V této části se budeme zabývat, hardwarovou stránkou hlavní jednotky. Bylo nutné
+    vyřešit dvě záležitosti, za prvé jakou platformu zvolit pro běh NTP serveru a za druhé
+    jak konvertovat zpět RS-485 signál. Jelikož provoz NTP serveru neni hardwarově
+    náročný, bylo zvoleno Raspberry ZERO 2. To přineslo řadu výhod, okamžitě se vyřešil
+    druhý problém, všechny přídavné obvody budou součástí tzv. HATu. A navíc je celá
+    sestava velice kompaktní.
 \subsection{RPi HAT}
-\subsubsection{Převod z RS-485 sběrnice}
-\subsubsection{Ethernetové připojení}
+    HAT je označení pro PCB, které je namontováno na, v našem případě, jednodeskový
+    počítač. Přičemž rozšiřuje funkčnost desky, přidává vlastnosti. Raspberry disponují
+    2x20 pinovou lištou, GPIO, která je vhodná pro komunikaci s HATem. Rozměry HATu jsou
+    shodné s Raspberry, je to z toho důvodu, aby byl HAT pomocí sloupků spojen s
+    raspberry, a tím bylo zajištěno pevné spojení desek.
+
+    Hlavní funkce HATu je jasná, má za úkol převádět RS-485 komunikaci zpět na TTL
+    logickou úroveň. Ale potom byl na desku ještě přidán ethernetový převodník. Iniciálně
+    se totiž plánovalo použít raspberry zero, to se neuskutečnilo, více bude řečeno
+    později.
+\subsubsection{Komunikace s anténou}
+
+    Je použito naprosto stejné zapojení jako na řidicí jednotce antény, to znamená i
+    stejný integrovaný obvod. Akorát je zapojený v režimu receiver. Výstup je zaveden na
+    UART na headeru raspberry.
+\\
+
+\textbf{Zprovoznění UART komunikace}
+\\
+
+    Při zprovozňování serveru vyvstal problém. Na samé piny (10 a 12) je připojena
+    sběrnice bluetooth. A přitom raspberry má několik UART zařízení, konkrétně AMA0,
+    USB0 a S0. Pro naše účely je vhodné pouze AMA0, jelikož jako jediný disponuje
+    nezávislým UART převodníkem, mimo CPU. Ostatní jsou závislé na aktuální taktovací
+    frekvenci CPU, která se mění, a to je nežádoucí u přesného vyčítání dat.
+
+    Takže jako první se deaktivoval kompletně bluetooth, přes \verb|raspi-config|. Ve
+    stejném prostředí byl povolen AMA0 serial port.
+
+    \vspace{1em}
+
+\begin{lstlisting}
+/boot/config.txt
+
+[all]
+
+enable_uart=1
+dtoverlay=disable-bt
+\end{lstlisting}
+
+    \vspace{1em}
+
+   Poté byla ověřena komunikace pomocí \verb|# screen /dev/ttyAMA0 9600|. Na konzoli by
+   se měli zobrazovat znaky (jedno jaké) s vteřinovou periodou.
+
+\subsection{Zprovoznění DCF77 jako stratum 1 NTP serveru}
+    A
+
+\subsection{Ethernetové připojení}
+
+
