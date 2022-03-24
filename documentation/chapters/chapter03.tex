@@ -174,9 +174,21 @@ NTP používá hierarchický systém „strata hodin“, kde systémy se stratem
    \begin{lstlisting}
 
     $ ntpq -c cv
-    fudgetime1=292.000,
+    ...
+    ... fudgetime1=292.000,
+    ...
    \end{lstlisting}
 
-\subsection{Ethernetové připojení}
+\subsection{Ethernetové připojení a USB-C napájení}
 
+Tyto dva hardwarové prvky se nepodařilo zprovoznit. Ethernet konektor slouží k navázání
+stabilního připojení. Problém spočíval v tom, že se zapomnělo připojit jednu nožičku
+integrovaného obvodu ethernetového převodníku na +3.3V, jednalo se o napájení TX. Bypass
+se povedl, obvod fungoval bez problémů. Avšak kvůli veliké křehkosti a nestabilnosti spoje
+byl čip odpájen a změněn návrh plošného spoje, který se nestihl znovu poptat.
 
+S napájecím konektorem byl nenapravitelný problém. Vlastně hlavní význam integrovat
+napájecí konektor na desku byla špatná orientace napájecího konektoru na RPi. A navíc
+USB-C napájení je v dnešní době nejuniverzálnější konektor. Problém spočíval v špatném
+footprintu. Vyřešilo se to tak, že se na napájecí linky RPi byly napájeny vodiče, které se
+přivedly na USB mini konektor, je robustnější než micro.
