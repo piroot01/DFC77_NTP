@@ -1,2 +1,94 @@
+V závěrečné kapitole si podrobně popíšeme, jak zažízení nasadit. V podstatě, co s
+zařízením dělat, když se nám dostane do rukou.
+
 \section{Nasazení zařízení na lokální síť}
+\subsubsection{1. Připojení}
+    Jako první musíme zažízení, resp. hlavní jednotku, připojit k lokální síti. Provedeme
+    to headless způsobem, takže první vyjmeme SD kartu z RPi. K SD kartě se dostaneme tak,
+    že povolíme dva krajní M3 šrouby na zadní straně hlavní jednotky. Vysuneme opatrně
+    uvolněný obal. Nikoliv se nesnažíme oddělit dvě části úplně, postačí jenom odklopit
+    odšroubovanou část a uvidíme RPi navrchu. Poté vytáhneme SD kartu, možná budou
+    překážet šrouby - odstraňte je proto zcela.
+
+    Vsuneme SD kartu do počítače a vytvoříme soubor (pokud již existuje, pak editujeme)
+    \verb|/etc/wpa_supplicant/wpa_supplicant.conf| a do něj zapíšeme.
+
+    \begin{lstlisting}
+
+    network={
+        ssid="SSID"
+        psk="password"
+        key_mgmt=WPA-PSK
+    }
+
+    \end{lstlisting}
+
+    Poté vrátíme SD kartu do zařízení přiklopíme obal, zašroubujeme, dbáme, abychom
+    neskříply žádné vodiče. Zapojíme zařízení na napájení. Abychom zjistili, jakou adresu
+    má zařízení můžeme použít například \verb|nmap -n 192.168.0.0/24|. Zařízení bude mít
+    pravděpodobně jako jedniné otevřený jenom ssh port. Poté se jednoduše připojíme přes
+    ssh jako uživatel \textit{ntpcli} \verb|ssh ntpcli@192.168.X.X|. Heslo je ntp. A nebo se zkusíme
+    připojit přes \verb|ssh ntpcli@raspberrypi.local|.
+
+\newpage
+
+\subsubsection{2. Status antény}
+
+    Nyní se zaměříme na NTP server. Jako první ověříme, že je nastartovaný NTP daemon.
+
+    \begin{lstlisting}
+
+    $ sudo systemctl status ntp
+    $ status
+
+    \end{lstlisting}
+
+    \noindent Poslední příkaz používáme k zjištění stavu, ten by měl iniciálně vypadat takto
+
+    {\scriptsize
+
+    \begin{lstlisting}
+
+    ntpcli@raspberrypi:~ $ status
+    associd=0 status=0000 no events, clk_unspec,
+    device="RAW DCF77 CODE (TimeBrick)", timecode="", poll=3, noreply=0,
+    badformat=0, baddata=0, fudgetime1=877.000, stratum=0, refid=DCFa,
+    flags=0, refclock_time="<UNDEFINED>", refclock_status="",
+    refclock_format="RAW DCF77 Timecode",
+    refclock_states="*NOMINAL: 00:02:48 (100.00%); running time: 00:02:48"
+
+    \end{lstlisting}
+    }
+
+    a když je přijímán korektní signál a je správně dekódován (obvykle do tří minut po
+    zapnutí - záleží na kvalitě signálu), potom takto:
+
+    {\scriptsize
+
+    \begin{lstlisting}
+
+    ntpcli@raspberrypi:~ $ status
+    associd=0 status=0020 2 events, clk_unspec,
+    device="RAW DCF77 CODE (TimeBrick)",
+    timecode="--#--##---#-------M-S12--1--P12---2P--4--2--412----2---2--P",
+    poll=8, noreply=0, badformat=2, baddata=0, fudgetime1=877.000, stratum=0,
+    refid=DCFa, flags=0,
+    refclock_time="e5e76b81.00000000  Thu, Mar 24 2022 22:13:21.000",
+    refclock_status="TIME CODE; (LEAP INDICATION; CALLBIT)",
+    refclock_format="RAW DCF77 Timecode",
+
+    \end{lstlisting}
+    }
+
+    Pokud trvá načtení správného bufferu dlouho, tak je slabý signál, což status antény
+    neobjeví. Buď lze počkat, NTP server nevyžaduje synchronizaci každou minutu, postačí
+    bohatě jedna synchronizace za 12 hodin, a nebo vyhledat místo s lepším příjmem.
+
+    Pokud chceme vidět aktuální dekódovaný čas, můžeme využít funkci \verb|t|. Ta spustí
+    \verb|watch| se sekundovou aktualizací. Vidíme-li \verb|Error 666: Check NTP status.|, znamená to, že hodiny nepřijímají. Pakliže se objeví aktuální čas, hodiny
+    přijímají.
+
+\subsubsection{3. Nastavení na lokální síť}
+
+
 \section{Status na displeji}
