@@ -5,14 +5,14 @@ Každý vodič, jímž prochází střídavý elektrický proud, je vlastně ant
 tvarováním vodiče a přidáváním jistých materiálů (ferity) se upravuje účinnost antény, dle
 vhodných parametrů.
 
-Každá anténa má své základní parametry, mezi hlavní patří zisk, rezonanční frekvence,
+Každá anténa má své základní parametry. Mezi hlavní patří zisk, rezonanční frekvence,
 šířka přijímaného pásma a vyzařovací úhel. Podle použití antény se tyto parametry mění.
 Avšak hlavním parametrem, který nejvíce ovlivňuje vlastnosti, je fyzický tvar antény.
 
 Proto dělíme antény na dipólové, monopólové, složené (Yagi-Uda anténa), smyčkové, kónické
 a clonové. Každá kategorie představuje jiné spektrum použití. Dipólové
 se používají pro vysílání TV signálu. Monopólové se používají při
-příjmu rádiových stanic, vlnové délky řádu desítek centietrů. Složené jsou vysoce účinné
+příjmu rádiových stanic, vlnové délky řádu desítek centimetrů. Složené jsou vysoce účinné
 pro širokopásmový příjem, TV i rádia. Smyčkovým anténám se budeme ještě věnovat. Kónické
 jsou vysoce účiné při vysokých frekvencích. Clonové jsou ideální pro dlouhý dosah.
 
@@ -24,44 +24,47 @@ návrhu a analýze jsou nejvíce rozšířené mezi radioamatéry.
 
 Klasifikují se dvou hlavních skupin, elektricky malé a velké. Elektricky malé antény jsou
 ty, jejichž celková délka (počet závitů znásobený obvodem antény) je menší než desetina
-vlnové délky. Zatímco velké antény svojí délkou odpovídají vlnové délce rezonanční
-frekvence. Nejvíce se smyčkové antény používají.
+vlnové délky. Velké antény svojí délkou odpovídají vlnové délce rezonanční
+frekvence. Nejvíce se smyčkové antény používají v pásmech dlouhých vln.
 
 Elektricky malé smyčkové antény mají obvykle menší radiační odpor než ztrátový odpor, tedy
 jsou špatné zářiče, používají se výhradně na příjem signálu. Nejvíce se používají při
 radiovému příjmu.
 
-Radiační odpor lze zvýšit, tím pádem zvýšit zisk antény, elektrickou délkou antény nebo
+Radiační odpor lze zvýšit, a tím pádem zvýšit zisk antény. Nebo prodloužit elektrickou
+délkou antény či
 použít jádro z materiálu o vysoké permeabilitě, nejčastěji ferit. Anténa, která je tvořená
-cívkou navinutou na feritovém jádře, se nazývá feritová smyčková anténa.
+cívkou navinutou na feritovém jádře, se nazývá feritová smyčková anténa \cite{book04}.
 
 \newpage
 
 \section{Konstrukce}
 
-Pro tento projekt byla zvolena feritová smyčková anténa. Hlavními důvody, proč byla
-zvolena tento typ antény je kompaktnost antény, velikost řádu centimetrů, a zisk při dané
+Pro tento projekt byla zvolena feritová smyčková anténa. Hlavní důvody, proč byl
+zvolen tento typ antény je kompaktnost, velikost řádu centimetrů, a zisk při dané
 rezonanční frekvenci. Praktická konstrukce je též jednoduchá. Jedná se vlastně o cívku,
-která je navinutá na feritové tyčince. S tím úzce souvicí požizovací cena antény, která je
+která je navinutá na feritové tyčince. S tím úzce souvicí pořizovací cena antény, která je
 nízká. Nevýhodou bylo shánění feritové tyčinky.
 
-Proto byla nejdříve pořízena tyčinka podle ní byla vypočítána cívka. Pro výrobu cívky byl
+Proto byla nejdříve pořízena tyčinka a podle ní byla vypočítána cívka. Pro výrobu cívky byl
 použit enamelový drát o průměru 0.2mm. Na polohu cívky, počet závitů a další parametry
 byl navržen program, o něm později. Cívka se nesmí na tyčce pohybovat, proto je zalitá
 epoxydem.
 
-Správná funkčnost antény byla zjištěna pomocí následující sestavy. Na generátor funkcí byl připojen volný vodič. Takže jsme vytvořili
+Správná funkčnost antény byla zajištěna pomocí následující sestavy. Na generátor funkcí
+byl připojen volný vodič. Vytvořili jsme
 jednoduchou anténu. Anténa byla připojena na předzesilovač a poté na osciloskop. Měněním
-frekvence na generátoru jsme sledovali úroveň napětí na výstupu zesilovače. Největší
+frekvence na generátoru a sledováním úrovně napětí na výstupu zesilovače. Největší
 úrovně jsme dosáhli na frekveci 77.564 kHz, což je v pořádku, neboť v
-demodulačním obvodu je použit vysoce účinný krystalový filtr.
+demodulačním obvodu je použit vysoce účinný krystalový filtr \cite{book01}
 
 \subsection{Program pro výpočet antény}
 
 Program na výpočet antény se skládá z dvou hlavních částí, kalkulace modelu antény a poté
 zpracování dat do grafů.
 
-Základem je výpočet radiačního - $R_r$, ohmického - $R_L$ a ztrátového odporu - $R_f$.
+Základem je výpočet radiačního - $R_r$, ohmického - $R_L$ a ztrátového odporu - $R_f$
+\cite{book02}.
 
 \begin{equation}
     \begin{gathered}
@@ -77,12 +80,13 @@ rezonanční frekvence, $S$ je účinný povrch antény a $L_r$ je délka antén
 Pro výpočet pozice cívky na feritové tyčce byly použity Nagaokovy rovnice, které nejblíže
 odpovídají reálnému modelu antény.
 
-Dále program spočítá rezonanční kondenzátor k dané anténě, jakkost antény. Zde je nutno
-podotknout, že jakkost úzce souvisí s ziskem a šířkou přijímaného pásma. Čím užší
-přijímané pásmo, tím vyšší zisk, avšak anténa je více náchylná na změny tlaku, teplot atd. Právě proto generuje program grafy, které vystihují závislosti díky nímž je snažší
-nalézt optimální parametry pro danou antény.
+Dále program spočítá rezonanční kondenzátor k dané anténě, jakost antény. Zde je nutno
+podotknout, že jakost úzce souvisí s ziskem a šířkou přijímaného pásma. Čím užší
+přijímané pásmo, tím vyšší zisk, avšak anténa je více náchylná na změny tlaku, teplot atd.
+Právě proto generuje program grafy, které vystihují závislosti a díky nímž je snažší
+nalézt optimální parametry pro danou anténu.
 
 Na konec program ještě vygeneruje tabulku, v níž jsou zapsány jednotlivé konfigurace
-antén.
+antén \cite{book03}
 
 

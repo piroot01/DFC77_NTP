@@ -20,7 +20,7 @@
 \subsection{DCF77}
     Označení DCF77 se užívá pro německý dlouhovlnný rádiový vysílač a také jedinou
     stanici, jíž poskytuje. Nosná frekvence DCF77 je 77500 Hz. Antény stanice se nacházejí
-    v Mainflingenu. Pravidelné a nepřetržité vysílání začalo v roce 1970.
+    v Mainflingenu. Pravidelné a nepřetržité vysílání začalo v roce 1970 \cite{dcf77}.
 \\
 
     \textbf{Vysílač}
@@ -29,7 +29,7 @@
     Vysílač má výkon 50 kW, avšak skutečný vyzářený výkon je přibližně 25 kW. K vysílání
     je použitá všesměrová anténa s kapacitním nástavcem, hlavní anténa je vysoká 150 m,
     přičemž při údržbách se používá 200 m vysoká záložní. Dosah vysílače je 1500 až 2000
-    km. V České republice fungoval do roku 1995 velice podobný vysílač OMA.
+    km. V České republice fungoval do roku 1995 velice podobný vysílač OMA \cite{dcf}.
 \\
 
     \textbf{Kódování DCF77}
@@ -65,36 +65,38 @@
     10 Mib/s.
 
     Přenos dat je uskutečněn pomocí 7 nebo 8bitových rámců se startbitem a poté jedním či
-    více stopbity. Vysílač by měl na výstupu při logické 1 (klidový stav linky) generovat na vodiči A napětí −2 V, na vodiči B +2 V, při logické 0 by měl na vodiči A generovat +2 V, na vodiči B −2 V.
+    více stopbity. Vysílač by měl na výstupu při logické 1 (klidový stav linky) generovat
+    na vodiči A napětí −2 V, na vodiči B +2 V, při logické 0 by měl na vodiči A generovat
+    +2 V, na vodiči B −2 V \cite{rs485}.
 
 \section{Zpracování anténní jednotky}
-Mezi hlavní požadavky patřila i kompaktnost, to znamená, že byl vytvořený, na zakázku,
+Mezi hlavní požadavky anténní jednotky patřila i kompaktnost, proto byl vytvořený, na zakázku,
 plošný spoj, na nemž jsou uložené všechny komponenty. Dělí se na tři základní sektory,
 první je zodpovědný za demodulaci signálu, druhý převádí demodulovaný signál na RS-485
-sběrnici a poslední vyhodnocuje jakkost signálu. Každému sektoru je přiřazen jeden
+sběrnici a poslední vyhodnocuje jakost signálu. Každému sektoru je přiřazen jeden
 integrovaný obvod.
 \subsection{Demodulace DCF77 signálu}
     Pro tento účel byl zvolen U4224B integrovaný obvod. Jedná se o přijímací obvod, který
-    disponuje demodulací od 40 do 80 kHz, podle zvoleného krystalu. Dále má velmi vysokou
+    disponuje demodulací od 40 do 80 kHz, podle zvoleného krystalu. Má velmi vysokou
     citlivost, takže i v oblatech s vysokým rušením či slabým signálem, je možně anténu
     dobře naladit.
 
-    Mohl být použito i zapojení typu superhat. Oscilátor naladěný na frekvenci 77 kHz by
+    Mohlo být použito i zapojení typu superhat. Oscilátor naladěný na frekvenci 77 kHz by
     byl přiveden na vstup vyváženého směšovače, kde společně s DCF77 signálem (77.5 kHz),
-    by vytvořily signál o rozdílovém kmitočtu 500 Hz. Tento signál by byl přiveden na
+    by vytvořil signál o rozdílovém kmitočtu 500 Hz. Tento signál by byl přiveden na
     vstup operačního zesilovače, který by fungoval jako aktivní pásmová propust s šířkou
-    pásma 50 Hz. Jelikož by obvod nebyl stabilní bylo by také nutné vybavit obvod AVC
+    pásma 50 Hz. Jelikož by obvod nebyl stabilní, bylo by také nutné vybavit obvod AVC
     (aktivním vyvážením citlivosti).
 
     Obvod výše popsaný by bylo možné sestavit pomocí diskrétních součástek, ale byl by
-    komplikovaný. Situaci navíc komplikuje fakt, že dnes hodně spínaných zdrojů generují
+    složitý. Situaci navíc komplikuje fakt, že dnes hodně spínaných zdrojů generují
     kmitočty, které vytvářejí harmonické násobky, a ty ruší příjem. Proto šířka pásma 50
     Hz je prostě moc široká. Zúžení pásma vedlo k použití tzv. krystalového filtru.
     Implementace krystalového filtru vedla na integrovaný obvod.
 
-    Na výstupu integrovaného je tedy demodulovaný DCF77 signál. Načež kvůli zvýšení
-    stability a ochrany dekodéru byl k obvodu zahrnut tvarovač signálu. Tedy obvod, který
-    se skládá z tranzistoru, který chrání dekodér a Schmittův klopný obvod na definování
+    Na výstupu integrovaného obvodu je tedy demodulovaný DCF77 signál. Kvůli zvýšení
+    stability a ochrany dekodéru byl k obvodu zahrnut tvarovač signálu. Je to obvod, který
+    se skládá z tranzistoru, který chrání dekodér a Schmittův klopný, obvod na definování
     napěťové úrovně. Tento signál je vedený na vstup převodníku RS-485.
 
 \subsection{Převod na RS-485 sběrnici}

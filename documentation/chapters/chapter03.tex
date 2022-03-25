@@ -9,7 +9,14 @@ NTP je jeden z nejstarších dosud používaných IP protokolů. NTP původně n
 
 NTP démon je uživatelský proces, který na stroji běží trvale. Většina protokolu a inteligence je implementována v tomto procesu. Pro dosažení nejlepšího výkonu je důležité, aby jádro operačního systému umělo řídit čas fázovým závěsem, místo aby přesný čas do systémových hodin dosazoval NTP démon přímo. Všechny dnešní verze Linuxu fázový závěs implementují.
 
-NTP používá hierarchický systém „strata hodin“, kde systémy se stratem 1 jsou synchronizovány s přesnými externími hodinami jako třeba GPS nebo jiné hodiny řízené rádiovým signálem (v Česku obvykle DCF77). NTP systémy strata 2 odvozují svůj čas od jednoho nebo více systémů se stratem 1 atd. To zabraňuje vzniku cyklu v grafu synchronizujících se strojů. Stratum systému leží v rozsahu 1 až 14; stratum 0 mají samotné referenční hodiny připojené k nejpřesnějšímu serveru; stratum 15 má počítač, který se v důsledku výpadku sítě nemůže synchronizovat s zdrojem času, nebo se synchronizuje po výpadku spojení.
+NTP používá hierarchický systém „strata hodin“, kde systémy se stratem 1 jsou
+synchronizovány s přesnými externími hodinami jako třeba GPS nebo jiné hodiny řízené
+rádiovým signálem (v Česku obvykle DCF77). NTP systémy strata 2 odvozují svůj čas od
+jednoho nebo více systémů se stratem 1 atd. To zabraňuje vzniku cyklu v grafu
+synchronizujících se strojů. Stratum systému leží v rozsahu 1 až 14; stratum 0 mají
+samotné referenční hodiny připojené k nejpřesnějšímu serveru; stratum 15 má počítač, který
+se v důsledku výpadku sítě nemůže synchronizovat s zdrojem času, nebo se synchronizuje po
+výpadku spojení \cite{ntp}.
 
 \section{Hardware}
 
@@ -69,7 +76,7 @@ NTP používá hierarchický systém „strata hodin“, kde systémy se stratem
 
 \subsection{Zprovoznění DCF77 jako stratum 1 NTP serveru}
     Potom, co jsme zajistili funkční vyčítání dat z anténý správným UART rozhraním, se
-    můžeme přesunout na samotnou instalaci NTP serveru.
+    můžeme přesunout na samotnou instalaci NTP serveru \cite{ntporg}.
     \\
 
     \textbf{Instalace s podporou RAW DCF}
