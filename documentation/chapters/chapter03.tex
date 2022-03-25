@@ -15,32 +15,32 @@ rádiovým signálem (v Česku obvykle DCF77). NTP systémy strata 2 odvozují s
 jednoho nebo více systémů se stratem 1 atd. To zabraňuje vzniku cyklu v grafu
 synchronizujících se strojů. Stratum systému leží v rozsahu 1 až 14; stratum 0 mají
 samotné referenční hodiny připojené k nejpřesnějšímu serveru; stratum 15 má počítač, který
-se v důsledku výpadku sítě nemůže synchronizovat s zdrojem času, nebo se synchronizuje po
+se v důsledku výpadku sítě nemůže synchronizovat se zdrojem času, nebo se synchronizuje po
 výpadku spojení \cite{ntp}.
 
 \section{Hardware}
 
-    V této části se budeme zabývat, hardwarovou stránkou hlavní jednotky. Bylo nutné
-    vyřešit dvě záležitosti, za prvé jakou platformu zvolit pro běh NTP serveru a za druhé
+    V této části se budeme zabývat hardwarovou stránkou hlavní jednotky. Bylo nutné
+    vyřešit dvě záležitosti; za prvé jakou platformu zvolit pro běh NTP serveru a za druhé
     jak konvertovat zpět RS-485 signál. Jelikož provoz NTP serveru neni hardwarově
     náročný, bylo zvoleno Raspberry ZERO 2. To přineslo řadu výhod, okamžitě se vyřešil
-    druhý problém, všechny přídavné obvody budou součástí tzv. HATu. A navíc je celá
+    druhý problém, všechny přídavné obvody budou součástí tzv. HATu. Navíc je celá
     sestava velice kompaktní.
 \subsection{RPi HAT}
-    HAT je označení pro PCB, které je namontováno na, v našem případě jednodeskový
-    počítač. Přičemž rozšiřuje funkčnost desky, přidává vlastnosti. Raspberry disponují
+    HAT je označení pro PCB, které je namontováno na, v našem případě, jednodeskový
+    počítač. Rozšiřuje funkčnost desky, přidává vlastnosti. Raspberry disponují
     2x20 pinovou lištou, GPIO, která je vhodná pro komunikaci s HATem. Rozměry HATu jsou
-    shodné s Raspberry, je to z toho důvodu, aby byl HAT pomocí sloupků spojen s
+    shodné s Raspberry. A je to z toho důvodu, aby byl HAT pomocí sloupků spojen s
     raspberry, a tím bylo zajištěno pevné spojení desek.
 
-    Hlavní funkce HATu je jasná, má za úkol převádět RS-485 komunikaci zpět na TTL
-    logickou úroveň. Ale potom byl na desku ještě přidán ethernetový převodník. Iniciálně
+    Hlavní funkce HATu, má za úkol převádět RS-485 komunikaci zpět na TTL
+    logickou úroveň. Potom byl na desku ještě přidán ethernetový převodník. Iniciálně
     se totiž plánovalo použít raspberry zero, to se neuskutečnilo, více bude řečeno
     později.
 \subsubsection{Komunikace s anténou}
 
     Je použito naprosto stejné zapojení jako na řidicí jednotce antény, to znamená i
-    stejný integrovaný obvod. Akorát je zapojený v režimu receiver. Výstup je zaveden na
+    stejný integrovaný obvod. Ten je zapojený v režimu receiver. Výstup je zaveden na
     UART na headeru raspberry.
 \\
 
@@ -70,19 +70,19 @@ výpadku spojení \cite{ntp}.
     \vspace{1em}
 
    Poté byla ověřena komunikace pomocí \verb|# screen /dev/ttyAMA0 9600|. Na konzoli by
-   se měli zobrazovat znaky (jedno jaké) s vteřinovou periodou.
+   se měly zobrazovat znaky (jedno jaké) s vteřinovou periodou.
 
 \newpage
 
 \subsection{Zprovoznění DCF77 jako stratum 1 NTP serveru}
-    Potom, co jsme zajistili funkční vyčítání dat z anténý správným UART rozhraním, se
+    Potom, co byla zajištěno funkční vyčítání dat z anténý správným UART rozhraním, se
     můžeme přesunout na samotnou instalaci NTP serveru \cite{ntporg}.
     \\
 
     \textbf{Instalace s podporou RAW DCF}
     \\
 
-    Prvním krokem je nainstaoování NTP, avšak pro naše účely je nutné podpora DCF77.
+    Prvním krokem je nainstaloování NTP, avšak pro naše účely je nutná podpora DCF77.
     Instalaci provedeme dle následujících kroků.
 
     \vspace{1em}
@@ -189,13 +189,13 @@ výpadku spojení \cite{ntp}.
 \subsection{Ethernetové připojení a USB-C napájení}
 
 Tyto dva hardwarové prvky se nepodařilo zprovoznit. Ethernet konektor slouží k navázání
-stabilního připojení. Problém spočíval v tom, že se zapomnělo připojit jednu nožičku
+stabilního připojení. Problém spočíval v tom, že jsem zapomněl připojit jednu nožičku
 integrovaného obvodu ethernetového převodníku na +3.3V, jednalo se o napájení TX. Bypass
 se povedl, obvod fungoval bez problémů. Avšak kvůli veliké křehkosti a nestabilnosti spoje
-byl čip odpájen a změněn návrh plošného spoje, který se nestihl znovu poptat.
+byl čip odpájen a změněn návrh plošného spoje, který jsem nestihl znovu poptat.
 
 S napájecím konektorem byl nenapravitelný problém. Vlastně hlavní význam integrovat
 napájecí konektor na desku byla špatná orientace napájecího konektoru na RPi. A navíc
 USB-C napájení je v dnešní době nejuniverzálnější konektor. Problém spočíval v špatném
-footprintu. Vyřešilo se to tak, že se na napájecí linky RPi byly napájeny vodiče, které se
+footprintu. Vyřešil jsem to tak, že se na napájecí linky RPi byly napájeny vodiče, které se
 přivedly na USB mini konektor, je robustnější než micro.

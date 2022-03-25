@@ -102,15 +102,15 @@ integrovaný obvod.
 \subsection{Převod na RS-485 sběrnici}
     Pro dobrý příjem signálu je nutné, aby byla anténa na vyvýšeném místě, bez rušení.
     To znamená, že napájecí vodiče, ale i datové linky, musejí být alespoň 10m dlouhé.
-    Napájení není problém, ale sigál vedený klasickou TTL komunikací by byl ohrožen,
-    norma TTL deklaruje dosah 2-3 metry. Tím pádem bylo nutné nalézt jinou normu.
+    Napájení není problém, ale signál vedený klasickou TTL komunikací by byl ohrožen.
+    Norma TTL deklaruje dosah 2-3 metry. Tím pádem bylo nutné nalézt jinou normu.
 
-    Potom byla zvolena norma RS-232, ta má dosah 20m. Ale potom se přešlo na RS-485, ta má
+    Potom byla zvolena norma RS-232, ta má dosah 20m. Následně se přešlo na RS-485, ta má
     jednak o 1 km vetší dosah a používá stejný typ kódováni jako 232. A to z důvodu jednak
     stejné požizovací ceny a vyšší napěťová úroveň zajišťuje značně vyšší odolnost vůči
     rušení.
 
-    Pro transkódování signálu byl použit integrovaný obvod SN75176, nepatří mezi rychlé
+    Pro transkódování signálu byl použit integrovaný obvod SN75176. Ten sice nepatří mezi rychlé
     převodníky, avšak na naší aplikaci je postačující. Komunikace probíhá jednostranně
     halfduplexem.
 
@@ -118,20 +118,20 @@ integrovaný obvod.
     vratné pojistky proti přepětí a nadproudu, který se může indukovat ve vodičích.
     Nakonec je signál zaveden na vstup Ethernet konektoru. Ten byl použit proto, že
     má pojistku a oproti ostatním průmyslovým konektorům je velice levný. A navíc UTP
-    kabel využívá kroucenou linku, která je záhodná u 485 komunikace.
+    kabel využívá kroucenou linku, která je výhodná u 485 komunikace.
 
 \subsection{Systém pro vyhledávání signálu}
 
     Abychom nemuseli při ladění antény čekat dvě minutu na načtení celého bufferu a potom
     zjišťovali, zda je správný. Nutno podotknou, že anténa je směrová, takže záleží na
-    směru normálového vektoru vůči zdroji, což je anténa DCF77. Což ještě ztěžuje situaci
-    ladění. Další, rychlejší, způsob ladění vyžaduje osciloskop. Proto bylo nutné vybavit
+    směru normálového vektoru vůči zdroji, což je anténa DCF77. To ještě ztěžuje situaci
+    ladění. Rychlejší způsob ladění vyžaduje osciloskop. Proto bylo nutné vybavit
     obvod zařízením, které by v reálném čase sledovalo přijímaný signál a vyhodnocovalo
     jeho kvalitu.
     \newpage
     Srdcem je mikrokontrolér PIC, na který je nahraný program, který analyzuje signál z
     přijímače. Dále jsou na PIC připojeny dvě LED, které fungují jako signalizace. Jedna
-    je zeléná, značící, že je obvod napájen a druhá, oranžová, signalizuje kvalitu
+    je zelená, značící, že je obvod napájen a druhá, oranžová, signalizuje kvalitu
     signálu. A to následujícím způsobem:
     \vspace{1em}
 
@@ -139,13 +139,14 @@ integrovaný obvod.
     rozbliká, znamená to, že byl přijat validní bit, pakliže se dioda rozbliká rychleji (s
     vyšší frekvencí), byl přijat další validní bit. Tento postup pokračuje, až dioda
     svítí, neboli anténa je naladěná. S klesající frekvencí se naopak anténa rozlaďuje.
-    Takže svítící dioda je zárukou dobrého signálu. }
+    Svitící dioda je zárukou dobrého signálu, nikoliv však dostatečně silného signálu,
+    který je vyžadován NTP. }
     \vspace{1em}
 
-    Program funguje tak, že kontroluje správnou délku signálu, frekvenci, intervali mezi
+    Program funguje tak, že kontroluje správnou délku signálu, frekvenci, intervaly mezi
     jednotlivými pulsy, inverzní délku pulzů a minutový puls (prázdný). Pakliže všechny
-    parametry jsou splněny je bit zaznamenán jako korektní. Tuto proceduru provádí s
-    každým bitem a to v reálném čase, takže uživatel má aktuální přehled o kvalitě
+    parametry jsou splněny, je bit zaznamenán jako korektní. Tuto proceduru provádí s
+    každým bitem, a to v reálném čase, takže uživatel má aktuální přehled o kvalitě
     přijímaného signálu a může nalézt místo s nejlepším příjmem.
 
     Deska je osazená pinovou lištou, která slouží k flashování programu, takže je velice
