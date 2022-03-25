@@ -39,6 +39,7 @@ zařízením dělat, když se nám dostane do rukou.
     \begin{lstlisting}
 
     $ sudo systemctl status ntp
+    # password for sudo is ntp
     $ status
 
     \end{lstlisting}
@@ -84,11 +85,39 @@ zařízením dělat, když se nám dostane do rukou.
     neobjeví. Buď lze počkat, NTP server nevyžaduje synchronizaci každou minutu, postačí
     bohatě jedna synchronizace za 12 hodin, a nebo vyhledat místo s lepším příjmem.
 
-    Pokud chceme vidět aktuální dekódovaný čas, můžeme využít funkci \verb|t|. Ta spustí
-    \verb|watch| se sekundovou aktualizací. Vidíme-li \verb|Error 666: Check NTP status.|, znamená to, že hodiny nepřijímají. Pakliže se objeví aktuální čas, hodiny
-    přijímají.
+    Pokud chceme vidět aktuální dekódovaný čas, můžeme využít funkci \verb|t|, na konzoli,
+    jedná se o předvytvořený alias. Ta spustí
+    \verb|watch| se sekundovou aktualizací. Vidíme-li \verb|Error 666: Check NTP status.|,
+    znamená to, že hodiny nepřijímají. Pakliže se objeví aktuální čas, podařilo se
+    dekódovat načíst buffer pro probíhající minutu.
 
 \subsubsection{3. Nastavení na lokální síť}
 
+    Tato část se převážne věnuje konfiguračnímu souboru NTP, \verb|/etc/ntp.conf|.
+    Znamenaje, že nastavíme jací uživatelé budou mít přístup k času NTP serveru, resp.
+    subnet. To provedeme editací 53 řádku konfiguračního souboru.
 
-\section{Status na displeji}
+    \begin{lstlisting}
+    restrict 10.42.0.0 mask 255.255.0.0 notrap nomodify
+    \end{lstlisting}
+
+    Na tomto příkladu vidéme, že k času budou mít přístup uživatelé pouze subnetu
+    10.42.0.0 (například uživatel 10.42.6.9 bude mít přístup). A na konec editujeme řádek
+    58, který říká jakým uživatelúm má NTP server vysílat.
+
+    \begin{lstlisting}
+    broadcast 10.42.255.255
+    \end{lstlisting}
+
+    \noindent To je vše, co se týká konfigurace NTP serveru.
+
+\section{Nastavení klienta - chrony}
+
+    Tato část je jenom takovým dodatkem pro uživatele operačního systému Linux. Postačí do
+    konfiguračního souboru chrony \verb|/etc/chrony.conf| přidat:
+
+    \begin{lstlisting}
+    server 10.42.0.1 iburst
+    \end{lstlisting}
+
+    \noindent Kde 10.42.0.1 je adresa NTP serveru.
